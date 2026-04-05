@@ -35,7 +35,7 @@ struct ContentView: View {
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
         .tabViewSidebarBottomBar {
-            Text("🏆 SSC26 Winner")
+            Text("🏆 WWDC26 SSC Winner")
         }
     }
 }
