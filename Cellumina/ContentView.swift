@@ -8,15 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @AppStorage("MyTabViewCustomization")
+    private var customization: TabViewCustomization
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-            Text("Hello, world!")
+        TabView {
+            Tab("Explorer", systemImage: "eye") {
+                CellExplorerView()
+            }
+            .customizationID("Tab.explorer")
+//            .customizationBehavior(.disabled, for: .sidebar, .tabBar)
+            
+            Tab("Amoeba", systemImage: "aqi.medium") {
+                AmoebaLabView()
+            }
+            .customizationID("Tab.amoeba")
+            
+            
+            Tab("Network", systemImage: "point.3.connected.trianglepath.dotted") {
+                CellNetworkView()
+            }
+            .customizationID("Tab.network")
+            
         }
-        .padding()
+        .tabViewStyle(.sidebarAdaptable)
+        .tabViewCustomization($customization)
+        .tabViewSidebarBottomBar {
+            Text("🏆 SSC26 Winner")
+        }
     }
 }
 
