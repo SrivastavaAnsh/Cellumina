@@ -120,8 +120,8 @@ struct CellExplorerView: View {
                 }
                 .padding(.top, 10)
             }
-            .navigationTitle("Explore")
-            .navigationBarTitleDisplayMode(.inline)
+//            .navigationTitle("Explorer")
+//            .navigationBarTitleDisplayMode(.inline)
 
             .sheet(item: $selectedOrganelle) { organelle in
                 OrganelleSheet(info: organelle, tint: selected.tint)

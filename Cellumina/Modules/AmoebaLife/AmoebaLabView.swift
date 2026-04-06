@@ -193,9 +193,13 @@ struct AmoebaLabView: View {
 
                 Spacer()
 
-                Button { scene.resetRun() } label: { Text("Reset") }
-                    .buttonStyle(.borderedProminent)
-                    .tint(infoTab.accent)
+                Button {
+                    scene.resetRun()
+                } label: {
+                    Text("Reset")
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(infoTab.accent)
             }
         }
         .padding(14)
