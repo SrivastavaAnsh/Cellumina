@@ -24,7 +24,7 @@ struct ContentView: View {
                 AmoebaLabView()
             }
             .customizationID("Tab.amoeba")
-            .defaultVisibility(.hidden, for: .tabBar)          // hide tab from tabbar
+//            .defaultVisibility(.hidden, for: .tabBar)          // hide tab from tabbar
             
             
             Tab("Network", systemImage: "point.3.connected.trianglepath.dotted") {
