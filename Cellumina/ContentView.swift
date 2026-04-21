@@ -18,13 +18,13 @@ struct ContentView: View {
                 CellExplorerView()
             }
             .customizationID("Tab.explorer")
-            .customizationBehavior(.disabled, for: .sidebar, .tabBar)        // tab is not customizable in sidebar & tabbar
+            .customizationBehavior(.disabled, for: .sidebar, .tabBar)      // tab is not customizable in sidebar & tabbar
             
             Tab("Amoeba", systemImage: "aqi.medium") {
                 AmoebaLabView()
             }
             .customizationID("Tab.amoeba")
-//            .defaultVisibility(.hidden, for: .tabBar)          // hide tab from tabbar
+//            .defaultVisibility(.hidden, for: .tabBar)                    // to hide tab from tabbar
             
             
             Tab("Network", systemImage: "point.3.connected.trianglepath.dotted") {
@@ -37,6 +37,7 @@ struct ContentView: View {
         .tabViewCustomization($customization)
         .tabViewSidebarBottomBar {
             Text("🏆 WWDC26 SSC Winner")
+                .padding(.bottom)
         }
     }
 }
