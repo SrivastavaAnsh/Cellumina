@@ -250,3 +250,7 @@ struct AmoebaHUDState: Equatable {
     var water: CGFloat = 0.25
     var phaseTitle: String = "Move • Eat • Learn"
 }
+
+#Preview {
+    AmoebaLabView()
+}

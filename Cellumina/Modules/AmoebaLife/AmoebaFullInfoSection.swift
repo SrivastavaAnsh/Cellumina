@@ -290,3 +290,7 @@ struct AmoebaFullInfoSection: View {
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }
+
+#Preview {
+    AmoebaFullInfoSection(tab: .constant(.overview))
+}

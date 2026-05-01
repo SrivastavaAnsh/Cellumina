@@ -192,3 +192,7 @@ struct AmoebaAISummarySheet: View {
         }
     }
 }
+
+#Preview {
+    AmoebaAISummarySheet(tab: .constant(.overview))
+}

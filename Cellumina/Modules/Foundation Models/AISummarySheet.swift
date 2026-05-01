@@ -270,7 +270,8 @@ struct AISummarySheet: View {
             text = output
 
         } catch is CancellationError {
-            // ignore this, no code needed
+            print("Cnacellqation Error, No code needed")
+            // no code needed
         } catch {
             let msg = (error as? LocalizedError)?.errorDescription ?? String(describing: error)
             errorText = msg
@@ -310,3 +311,12 @@ private struct OrganellesPill: View {
     }
 }
 
+#Preview {
+    AISummarySheet(cell: .animal)
+}
+#Preview {
+    AISummarySheet(cell: .plant)
+}
+#Preview {
+    AISummarySheet(cell: .bacteria)
+}

@@ -651,5 +651,9 @@ private struct OrganelleSheet: View {
     }
 }
 
+#Preview {
+    CellExplorerView()
+}
+
 
 

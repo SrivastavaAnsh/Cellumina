@@ -332,3 +332,7 @@ struct CellNetworkView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
+#Preview {
+    CellNetworkView()
+}

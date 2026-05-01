@@ -122,3 +122,7 @@ struct AmoebaInfoOverlay: View {
         }
     }
 }
+
+#Preview {
+    AmoebaInfoOverlay(isPresented: .constant(true), payload: .nucleus)
+}

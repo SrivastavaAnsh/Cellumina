@@ -169,3 +169,7 @@ struct NetworkAISummarySheet: View {
         }
     }
 }
+
+#Preview {
+    NetworkAISummarySheet(mode: .paracrine)
+}
