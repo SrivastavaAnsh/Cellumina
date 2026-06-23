@@ -4,7 +4,7 @@ import Observation
 import AuthenticationServices
 import UIKit
 
-struct UserProfile: Codable {
+struct UserProfile: Codable, Equatable {
     let id: UUID
     let name: String?
     let phoneNumber: String?
@@ -173,6 +173,28 @@ class AuthViewModel {
         do {
             try await SupabaseManager.shared.client.auth.signOut()
         } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    func updateUserProfile(name: String, phoneNumber: String, dateOfBirth: String) async {
+        var currentUserId = userProfile?.id
+        if currentUserId == nil {
+            currentUserId = try? await SupabaseManager.shared.client.auth.session.user.id
+        }
+        guard let userId = currentUserId else { return }
+        isLoading = true
+        errorMessage = nil
+        do {
+            let profile = UserProfile(id: userId, name: name, phoneNumber: phoneNumber, dateOfBirth: dateOfBirth)
+            try await SupabaseManager.shared.client
+                .from("users")
+                .upsert(profile)
+                .execute()
+            
+            await fetchUserProfile(userId: userId)
+            isLoading = false
+        } catch {
+            isLoading = false
             errorMessage = error.localizedDescription
         }
     }

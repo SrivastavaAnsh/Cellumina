@@ -11,6 +11,7 @@ import Supabase
 struct ContentView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @State private var showProfile = false
+    @State private var showCompleteProfile = false
     
     @State private var email: String?
     
@@ -88,7 +89,24 @@ struct ContentView: View {
                 ProfileView()
             }
         }
+        .sheet(isPresented: $showCompleteProfile) {
+            CompleteProfileView()
+        }
+        .onChange(of: authViewModel.userProfile) { oldValue, newValue in
+            if let profile = newValue {
+                let isIncomplete = (profile.name?.trimmingCharacters(in: .whitespaces).isEmpty ?? true) ||
+                                   (profile.phoneNumber?.trimmingCharacters(in: .whitespaces).isEmpty ?? true) ||
+                                   (profile.dateOfBirth?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+                showCompleteProfile = isIncomplete
+            }
+        }
         .task {
+            if let profile = authViewModel.userProfile {
+                let isIncomplete = (profile.name?.trimmingCharacters(in: .whitespaces).isEmpty ?? true) ||
+                                   (profile.phoneNumber?.trimmingCharacters(in: .whitespaces).isEmpty ?? true) ||
+                                   (profile.dateOfBirth?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+                showCompleteProfile = isIncomplete
+            }
             do {
                 let session = try await SupabaseManager.shared.client.auth.session
                 self.email = session.user.email
