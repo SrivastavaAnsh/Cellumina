@@ -11,6 +11,8 @@ struct ContentView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @State private var showProfile = false
     
+    @State private var email: String?
+    
     @AppStorage("MyTabViewCustomization")
     private var customization: TabViewCustomization
     
@@ -68,9 +70,8 @@ struct ContentView: View {
                 .padding(.bottom, 8)
             }
             .buttonStyle(.plain)
-            .popover(isPresented: $showProfile) {
+            .sheet(isPresented: $showProfile) {
                 ProfileView()
-                    .presentationDetents([.medium, .large])
             }
         }
     }
