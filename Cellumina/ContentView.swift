@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AuthViewModel.self) private var authViewModel
+    @State private var showProfile = false
     
     @AppStorage("MyTabViewCustomization")
     private var customization: TabViewCustomization
@@ -36,8 +38,40 @@ struct ContentView: View {
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
         .tabViewSidebarBottomBar {
-            Text("🏆 WWDC26 SSC Winner")
-                .padding(.bottom)
+            Button {
+                showProfile.toggle()
+            } label: {
+                HStack(spacing: 12) {
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(UIConstants.accent, UIConstants.card)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(authViewModel.userProfile?.name ?? "Profile")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                            .lineLimit(1)
+                        
+                        Text("Cellumina Explorer")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(Color(uiColor: .secondarySystemGroupedBackground).opacity(0.5))
+                .cornerRadius(12)
+                .padding(.horizontal, 8)
+                .padding(.bottom, 8)
+            }
+            .buttonStyle(.plain)
+            .popover(isPresented: $showProfile) {
+                ProfileView()
+                    .presentationDetents([.medium, .large])
+            }
         }
     }
 }

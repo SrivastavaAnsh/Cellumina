@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct CelluminaApp: App {
+    @State private var authViewModel = AuthViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if authViewModel.isAuthenticated {
+                ContentView()
+                    .environment(authViewModel)
+            } else {
+                AuthView()
+                    .environment(authViewModel)
+            }
         }
     }
 }
