@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Supabase
 
 struct ContentView: View {
     @Environment(AuthViewModel.self) private var authViewModel
@@ -44,19 +45,36 @@ struct ContentView: View {
                 showProfile.toggle()
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .frame(width: 32, height: 32)
-                        .foregroundStyle(UIConstants.accent, UIConstants.card)
+                    let name = authViewModel.userProfile?.name ?? "Profile"
+                    let initials = name.components(separatedBy: .whitespacesAndNewlines)
+                        .filter { !$0.isEmpty }
+                        .compactMap { $0.first }
+                        .prefix(2)
+                        .map { String($0) }
+                        .joined()
+                        .uppercased()
+                    
+                    ZStack {
+                        LinearGradient(
+                            colors: [Color.blue.opacity(0.4), Color.indigo.opacity(0.6)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        Text(initials.isEmpty ? "P" : initials)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                    .frame(width: 44, height: 44)
+                    .clipShape(Circle())
                     
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(authViewModel.userProfile?.name ?? "Profile")
-                            .font(.headline)
+                        Text(name)
+                            .font(.system(size: 16, weight: .semibold))
                             .foregroundStyle(.primary)
                             .lineLimit(1)
                         
-                        Text("Cellumina Explorer")
-                            .font(.caption)
+                        Text(email ?? "Cellumina Explorer")
+                            .font(.system(size: 13))
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                     }
@@ -64,14 +82,18 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
-                .background(Color(uiColor: .secondarySystemGroupedBackground).opacity(0.5))
-                .cornerRadius(12)
-                .padding(.horizontal, 8)
-                .padding(.bottom, 8)
             }
             .buttonStyle(.plain)
             .sheet(isPresented: $showProfile) {
                 ProfileView()
+            }
+        }
+        .task {
+            do {
+                let session = try await SupabaseManager.shared.client.auth.session
+                self.email = session.user.email
+            } catch {
+                print("Could not fetch session email: \(error)")
             }
         }
     }

@@ -11,15 +11,33 @@ struct ProfileView: View {
         NavigationStack {
             List {
                 Section {
-                    HStack(spacing: 16) {
-                        Image(systemName: "person.crop.circle.fill")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .foregroundStyle(UIConstants.accent, UIConstants.card)
+                    VStack(spacing: 12) {
+                        let name = authViewModel.userProfile?.name ?? "Profile"
+                        let initials = name.components(separatedBy: .whitespacesAndNewlines)
+                            .filter { !$0.isEmpty }
+                            .compactMap { $0.first }
+                            .prefix(2)
+                            .map { String($0) }
+                            .joined()
+                            .uppercased()
                         
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(authViewModel.userProfile?.name ?? "Cellumina Explorer")
-                                .font(.title3)
+                        ZStack {
+                            LinearGradient(
+                                colors: [Color.blue.opacity(0.4), Color.indigo.opacity(0.6)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                            Text(initials.isEmpty ? "P" : initials)
+                                .font(.system(size: 36, weight: .semibold))
+                                .foregroundStyle(.white)
+                        }
+                        .frame(width: 80, height: 80)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                        
+                        VStack(spacing: 4) {
+                            Text(name)
+                                .font(.title2)
                                 .fontWeight(.semibold)
                             
                             if let email = email {
@@ -29,8 +47,11 @@ struct ProfileView: View {
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
                 }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
                 
                 Section("Personal Information") {
                     if let phone = authViewModel.userProfile?.phoneNumber, !phone.isEmpty {
@@ -77,10 +98,13 @@ struct ProfileView: View {
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
+
                 }
             }
             .task {
