@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum UIConstants {
-    static let accent: Color = .pink
+    static let accent: Color = .red
 
     static let corner: CGFloat = 18
     static let pad: CGFloat = 16

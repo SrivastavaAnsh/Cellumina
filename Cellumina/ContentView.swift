@@ -12,6 +12,9 @@ struct ContentView: View {
     @AppStorage("MyTabViewCustomization")
     private var customization: TabViewCustomization
     
+    @AppStorage("hasSeenOnboarding")
+    private var hasSeenOnboarding: Bool = false
+    
     var body: some View {
         TabView {
             Tab("Explorer", systemImage: "eye") {
@@ -38,6 +41,12 @@ struct ContentView: View {
         .tabViewSidebarBottomBar {
             Text("🏆 WWDC26 SSC Winner")
                 .padding(.bottom)
+        }
+        .fullScreenCover(isPresented: Binding(
+            get: { !hasSeenOnboarding },
+            set: { _ in }
+        )) {
+            OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
         }
     }
 }
