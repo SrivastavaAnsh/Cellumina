@@ -91,6 +91,7 @@ struct NetworkAISummarySheet: View {
                 Spacer()
 
                 Button {
+                    Haptics.tap()
                     if speech.isSpeaking {
                         speech.stop()
                     } else {

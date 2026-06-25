@@ -128,6 +128,7 @@ struct AISummarySheet: View {
                                 isSelected: isSelected(org),
                                 tint: cell.tint.opacity(0.70)
                             ) {
+                                Haptics.tap()
                                 withAnimation(.snappy(duration: 0.18)) {
                                     selectedOrganelle = org
                                 }
@@ -157,6 +158,7 @@ struct AISummarySheet: View {
                 Spacer()
 
                 Button {
+                    Haptics.tap()
                     if speech.isSpeaking {
                         speech.stop()
                     } else {

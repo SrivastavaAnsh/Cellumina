@@ -204,6 +204,7 @@ struct CellNetworkView: View {
                     Spacer()
 
                     Button {
+                        Haptics.tap()
                         showAISummary = true
                     } label: {
                         Label("AI Summary", systemImage: "sparkles")
