@@ -90,7 +90,7 @@ struct OnboardingView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .always))
             .indexViewStyle(.page(backgroundDisplayMode: .always))
-            .onChange(of: selectedTab) { _ in
+            .onChange(of: selectedTab) {
                 Haptics.tap()
             }
             .onAppear {
@@ -162,6 +162,7 @@ struct OnboardingSlide: View {
             
             if showButton {
                 Button(action: {
+                    Haptics.success()
                     buttonAction?()
                 }) {
                     Text("Get Started")

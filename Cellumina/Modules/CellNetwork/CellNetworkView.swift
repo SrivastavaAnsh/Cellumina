@@ -127,6 +127,7 @@ struct CellNetworkView: View {
     private func overviewCard(isLandscape: Bool) -> some View {
         card {
             Button {
+                Haptics.tap()
                 toggleOverview(isLandscape: isLandscape)
             } label: {
                 HStack(spacing: 12) {
@@ -180,6 +181,7 @@ struct CellNetworkView: View {
     private func aboutCard(isLandscape: Bool) -> some View {
         card {
             Button {
+                Haptics.tap()
                 toggleAbout(isLandscape: isLandscape)
             } label: {
                 HStack(spacing: 12) {

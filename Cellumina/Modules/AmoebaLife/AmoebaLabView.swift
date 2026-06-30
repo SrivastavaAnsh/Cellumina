@@ -15,7 +15,7 @@ struct AmoebaLabView: View {
     @State private var scene = AmoebaScene()
     @State private var hud = AmoebaHUDState()
 
-    @State private var showInfo = false
+    @State private var showHowToPlay = false
     @State private var infoPayload: AmoebaInfoPayload? = nil
 
     @State private var showEnergyEmptyAlert = false
@@ -61,7 +61,12 @@ struct AmoebaLabView: View {
                 }
             }
             .background(Color(.systemBackground))
-            .overlay(AmoebaInfoOverlay(isPresented: $showInfo, payload: infoPayload))
+            .sheet(item: $infoPayload) { payload in
+                AmoebaOrganelleSheet(payload: payload)
+            }
+            .sheet(isPresented: $showHowToPlay) {
+                HowToPlaySheet()
+            }
             .onAppear {
                 scene.setInterfaceStyle(scheme == .dark ? .dark : .light)
             }
@@ -71,6 +76,7 @@ struct AmoebaLabView: View {
         }
         .alert("Energy Depleted", isPresented: $showEnergyEmptyAlert) {
             Button("Reset Amoeba") {
+                Haptics.tap()
                 scene.isPaused = false
                 scene.resetRun()
                 showEnergyEmptyAlert = false
@@ -126,8 +132,8 @@ struct AmoebaLabView: View {
 
                         scene.onInfo = { payload in
                             DispatchQueue.main.async {
+                                Haptics.tap()
                                 self.infoPayload = payload
-                                self.showInfo = true
                             }
                         }
                         
@@ -161,16 +167,8 @@ struct AmoebaLabView: View {
             Spacer()
 
             Button {
-                infoPayload = .init(
-                    title: "How to play",
-                    subtitle: "Drag in the box to move. Eat bacteria to gain energy.",
-                    bullets: [
-                        "Drag inside the box → amoeba moves",
-                        "Touch bacteria → engulf & energy increases",
-                        "Tap nucleus or vacuole for facts"
-                    ]
-                )
-                showInfo = true
+                Haptics.tap()
+                showHowToPlay = true
             } label: {
                 Image(systemName: "info.circle").font(.title3)
             }
@@ -194,6 +192,7 @@ struct AmoebaLabView: View {
                 Spacer()
 
                 Button {
+                    Haptics.tap()
                     scene.resetRun()
                 } label: {
                     Text("Reset")
@@ -251,6 +250,63 @@ struct AmoebaHUDState: Equatable {
     var phaseTitle: String = "Move • Eat • Learn"
 }
 
+struct HowToPlaySheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    Image(systemName: "gamecontroller.fill")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.pink.gradient)
+                        .padding(.top, 20)
+
+                    VStack(spacing: 8) {
+                        Text("How to play")
+                            .font(.title.bold())
+                        Text("Drag in the box to move. Eat bacteria to gain energy.")
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+
+                    VStack(alignment: .leading, spacing: 16) {
+                        instructionRow(icon: "hand.draw.fill", color: .blue, text: "Drag inside the box to move the amoeba.")
+                        instructionRow(icon: "bolt.fill", color: .orange, text: "Touch bacteria to engulf them and gain energy.")
+                        instructionRow(icon: "info.circle.fill", color: .purple, text: "Tap the nucleus or vacuole for fun facts.")
+                    }
+                    .padding(20)
+                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .padding(.horizontal)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { 
+                        Haptics.tap()
+                        dismiss() 
+                    }
+                }
+            }
+        }
+        .tint(.pink)
+    }
+
+    private func instructionRow(icon: String, color: Color, text: String) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundStyle(color)
+                .frame(width: 30)
+            Text(text)
+                .font(.body)
+                .foregroundStyle(.primary)
+        }
+    }
+}
 #Preview {
     AmoebaLabView()
 }

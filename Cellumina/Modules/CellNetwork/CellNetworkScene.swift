@@ -250,6 +250,7 @@ final class CellNetworkScene: SKScene, SKPhysicsContactDelegate {
         guard let cell = tappedCell else {
             return
         }
+        DispatchQueue.main.async { Haptics.tap() }
         emitSignals(from: cell)
     }
 

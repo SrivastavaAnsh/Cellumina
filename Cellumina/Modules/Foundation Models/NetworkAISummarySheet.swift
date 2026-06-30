@@ -63,6 +63,7 @@ struct NetworkAISummarySheet: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
+                        Haptics.tap()
                         speech.stop()
                         dismiss()
                     }

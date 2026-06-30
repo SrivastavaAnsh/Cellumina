@@ -24,7 +24,7 @@ enum ExplorerCellType: String, CaseIterable, Identifiable, Hashable {
 
     var subtitle: String {
         switch self {
-            case .animal: return "Flexible membrane • Nucleus • Lysosomes"
+            case .animal: return "Flexible membrane"
             case .plant: return "Cell wall • Chloroplasts • Big vacuole"
             case .bacteria: return "No nucleus • Nucleoid • Small & fast"
         }
@@ -832,7 +832,7 @@ extension ExplorerCellType {
 
     var quickLine: String {
         switch self {
-        case .animal: return "Flexible membrane • Nucleus"
+        case .animal: return "Flexible membrane"
         case .plant: return "Cell wall • Chloroplasts"
         case .bacteria: return "No nucleus • Small & Fast"
         }

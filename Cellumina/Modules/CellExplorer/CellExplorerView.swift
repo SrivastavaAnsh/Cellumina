@@ -50,6 +50,7 @@ struct CellExplorerView: View {
                                         scene.configure()
 
                                         scene.onOrganelleTapped = { key in
+                                            Haptics.tap()
                                             if let hit = organelles.first(where: { $0.id.rawValue == key }) {
                                                 selectedOrganelle = hit
                                                 return
@@ -154,6 +155,7 @@ struct CellExplorerView: View {
             chooserButton(.plant)
             chooserButton(.bacteria)
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
     
     private func realisticImageName(for type: ExplorerCellType) -> String? {
@@ -166,8 +168,10 @@ struct CellExplorerView: View {
 
     private func chooserButton(_ type: ExplorerCellType) -> some View {
         Button {
-            Haptics.tap()
-            selected = type
+            if selected != type {
+                Haptics.tap()
+                selected = type
+            }
         } label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -175,17 +179,19 @@ struct CellExplorerView: View {
                         .font(.title3)
                         .bold()
                         .foregroundStyle(.primary)
-                    Spacer()
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                    Spacer(minLength: 0)
                     Image(systemName: type.icon)
                         .foregroundStyle(type.tint)
                 }
                 Text(type.quickLine)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .padding(12)
-            .frame(maxWidth: .infinity, minHeight: 74, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 74, maxHeight: .infinity, alignment: .topLeading)
             .background(UIConstants.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
@@ -500,13 +506,20 @@ private struct OrganelleSheet: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(16)
+                .onChange(of: showCore) { _, _ in Haptics.tap() }
+                .onChange(of: showFunctions) { _, _ in Haptics.tap() }
+                .onChange(of: showRegulation) { _, _ in Haptics.tap() }
+                .onChange(of: showClinical) { _, _ in Haptics.tap() }
             }
             .navigationTitle("Organelle")
             .navigationBarTitleDisplayMode(.inline)
             .scrollIndicators(.hidden)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button("Done") { 
+                        Haptics.tap()
+                        dismiss() 
+                    }
                 }
             }
         }

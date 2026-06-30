@@ -84,6 +84,7 @@ struct AmoebaAISummarySheet: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
+                        Haptics.tap()
                         speech.stop()
                         dismiss()
                     }
