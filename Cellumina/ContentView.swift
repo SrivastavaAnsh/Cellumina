@@ -39,9 +39,12 @@ struct ContentView: View {
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
         .tabViewSidebarBottomBar {
-            Text("🏆 WWDC26 SSC Winner")
+            Text(" WWDC26 SSC Winner")
                 .padding(.bottom)
         }
+//        .tabViewSidebarFooter(content: {
+//            Text("Hello")
+//        })
         .fullScreenCover(isPresented: Binding(
             get: { !hasSeenOnboarding },
             set: { _ in }
