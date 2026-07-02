@@ -39,7 +39,7 @@ struct ContentView: View {
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
         .tabViewSidebarBottomBar {
-            Text(" WWDC26 SSC Winner")
+            Text("\(Image(systemName: "medal.star.fill")) WWDC26 SSC Winner")
                 .padding(.bottom)
         }
 //        .tabViewSidebarFooter(content: {
